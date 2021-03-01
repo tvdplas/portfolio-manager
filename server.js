@@ -21,7 +21,8 @@ app.get("/markets/:marketType/:marketAbbr", (req, res) => {
     con.query(`
             SELECT DataTime, CurrencyAbbr, Value
             FROM marketvalue 
-            WHERE MarketAbbr = '${req.params.marketAbbr}' AND MarketType = '${req.params.marketType}';`,
+            WHERE MarketAbbr = '${req.params.marketAbbr}' AND MarketType = '${req.params.marketType}'
+            ORDER BY DateTime DESC LIMIT 50`,
         (qerr, qres) => {
             let ret = {
                 MarketAbbr: req.params.marketAbbr,
