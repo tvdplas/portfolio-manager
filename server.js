@@ -25,7 +25,7 @@ function UpdateMarketValues() {
 }
 
 function UpdateMarket(market) {
-    let MD
+    let MD = {}
 
     //First, get the new value for the market
     if (market.MarketType = "crypto") {
