@@ -41,16 +41,18 @@ function UpdateMarket(market) {
                 CurrencyAbbr: "EUR",
                 Value: rawMD.sell
             }
+
+            con.query(`
+                INSERT INTO marketvalue
+                VAlUES ('${MD.DateTime}', '${MD.MarketType}', '${MD.MarketAbbr}', '${MD.CurrencyAbbr}', '${MD.Value}')`,
+                (err, res) => {
+                    if (err) throw err;
+            })
         })
     }
     else {
         throw new Error("No valid market type found")
     }
 
-    con.query(`
-        INSERT INTO marketvalue
-        VAlUES ('${MD.DateTime}', '${MD.MarketType}', '${MD.MarketAbbr}', '${MD.CurrencyAbbr}', '${MD.Value}')`,
-        (err, res) => {
-            if (err) throw err;
-        })
+    
 }
