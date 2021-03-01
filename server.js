@@ -19,10 +19,14 @@ app.get("/markets/:marketType/:marketAbbr", (req, res) => {
 
     //TODO: THIS INPUT NEEDS TO BE SANITIZED
     con.query(`
+        SELECT * 
+        FROM (
             SELECT DataTime, CurrencyAbbr, Value
             FROM marketvalue 
             WHERE MarketAbbr = '${req.params.marketAbbr}' AND MarketType = '${req.params.marketType}'
-            ORDER BY UNIX_TIMESTAMP(DataTime) ASC LIMIT 50`,
+            ORDER BY UNIX_TIMESTAMP(DataTime) DESC LIMIT 50
+        )
+        ORDER BY UNIX_TIMESTAMP(DataTime) ASC`,
         (qerr, qres) => {
             console.log(qerr)
             let ret = {
