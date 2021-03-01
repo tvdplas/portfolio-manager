@@ -18,18 +18,20 @@
 
 
             $.getJSON("markets/crypto/btc", (marketData) => {
-                GraphMarket(marketData, cv)
+                GraphMarket(marketData, cv, "#FF0000")
             })
             $.getJSON("markets/crypto/ada", (marketData) => {
-                GraphMarket(marketData, cv)
+                GraphMarket(marketData, cv, "#00FF00")
             })
             $.getJSON("markets/crypto/enj", (marketData) => {
-                GraphMarket(marketData, cv)
+                GraphMarket(marketData, cv, "#0000FF")
             })
         })
 
-        function GraphMarket(marketData, cv) {
+        //Graphs a market based on the market data, a reference to the canvas on which is is to be drawn and the color
+        function GraphMarket(marketData, cv, color) {
             let ctx = cv.getContext('2d')
+            ctx.strokeStyle = color
 
             let min = Math.min(...marketData.data.map(o => o.Value))
             let max = Math.max(...marketData.data.map(o => o.Value))
