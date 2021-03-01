@@ -33,19 +33,18 @@ function UpdateMarket(market) {
             if (reqErr) throw reqErr
 
             let rawMD = JSON.parse(body)
-            console.log(rawMD)
 
             MD = {
                 DateTime: new Date().toISOString().slice(0, 19).replace('T', ' '),
                 MarketType: market.MarketType,
                 MarketAbbr: market.MarketAbbr,
                 CurrencyAbbr: "EUR",
-                Value: rawMD.sell
+                Value: rawMD.result.sell
             }
 
             con.query(`
                 INSERT INTO marketvalue
-                VAlUES ('${MD.DateTime}', '${MD.MarketType}', '${MD.MarketAbbr}', '${MD.CurrencyAbbr}', '${MD.Value.toFixed(6)}')`,
+                VAlUES ('${MD.DateTime}', '${MD.MarketType}', '${MD.MarketAbbr}', '${MD.CurrencyAbbr}', '${MD.Value.toFixed(7)}')`,
                 (err, res) => {
                     if (err) throw err;
             })
