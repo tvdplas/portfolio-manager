@@ -29,8 +29,6 @@ app.get("/markets/:marketType/:marketAbbr", (req, res) => {
                 data: JSON.parse(qres)
             }
             res.send(JSON.stringify(ret))
-
-            con.end()
         })
 })
 
