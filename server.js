@@ -21,7 +21,7 @@ app.get("/markets/:marketID", (req, res) => {
 
         //TODO: THIS INPUT NEEDS TO BE SANITIZED
         con.query(`SELECT * FROM marketvalue WHERE MarketAbbr = '${req.params.marketID}';`, (qerr, qres) => {
-            res.send(`Length: ${qres.length}`)
+            res.send(JSON.stringify(qres))
         })
     })
 })
