@@ -14,6 +14,9 @@
 
     <script>
         $(document).ready(() => {
+            const urlParams = new URLSearchParams(window.location.search)
+            console.log(urlParams.get('dpcount'))
+
             let cv = document.getElementById("cv")
 
 
