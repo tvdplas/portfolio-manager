@@ -30,8 +30,8 @@ CREATE TABLE portfoliocontent(
     MarketType VARCHAR(16),
     MarketAbbr VARCHAR(16) NOT NULL,
     IsHeld BOOL NOT NULL DEFAULT 1,
-    Amount FLOAT NOT NULL,
     BuyPrice FLOAT NOT NULL,
+    Amount FLOAT NOT NULL,
     CONSTRAINT PK_Content PRIMARY KEY (ContentID),
     FOREIGN KEY (UserID) REFERENCES users(UserID),
     FOREIGN KEY (MarketType, MarketAbbr) REFERENCES markets(MarketType, MarketAbbr)

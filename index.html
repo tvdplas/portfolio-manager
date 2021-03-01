@@ -13,20 +13,21 @@
     <canvas width="1000" height="600" id="cv"></canvas>
 
     <script>
+        let marketInfo = [] //Holds all the information about the active markets
+
         $(document).ready(() => {
             const dpcount = new URLSearchParams(window.location.search).get('dpcount') ?? 1440
             
             let cv = document.getElementById("cv")
-
-
-            $.getJSON(`markets/crypto/btc?dpcount=${dpcount}`, (marketData) => {
-                GraphMarket(marketData, cv, "#FF0000")
-            })
-            $.getJSON(`markets/crypto/ada?dpcount=${dpcount}`, (marketData) => {
-                GraphMarket(marketData, cv, "#00FF00")
-            })
-            $.getJSON(`markets/crypto/enj?dpcount=${dpcount}`, (marketData) => {
-                GraphMarket(marketData, cv, "#0000FF")
+            
+            $.getJSON(`users/1`, (userData) => {
+                //Get the info for each portfolio item
+                userData.data.forEach(pItem => {
+                    $.getJSON(`markets/crypto/${pItem.MarketAbbr}?dpcount=${dpcount}`, (marketData) => {
+                        let currentValue = marketData.data[marketData.data.length - 1].Value * pItem.Amount;
+                        console.log(`Current ${pItem.MarketAbbr} val: ${currentValue}`, `Change: ${pItem.BuyPrice} | ${(currentValue / pItem.BuyPrice - 1) * 100}%`)
+                    })
+                });
             })
         })
 
