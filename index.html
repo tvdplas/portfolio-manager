@@ -96,7 +96,7 @@
         function ChangeCurrentGraph(marketAbbr) {
             let cv = document.getElementById("cv")
             let marketData = marketInfo.find(e => e.MarketAbbr === marketAbbr)
-            GraphMarket(marketData, vc, "#F00")
+            GraphMarket(marketData, cv, "#F00")
         }
 
         //Graphs a market based on the market data, a reference to the canvas on which is is to be drawn and the color
