@@ -24,6 +24,7 @@ app.get("/markets/:marketType/:marketAbbr", (req, res) => {
             WHERE MarketAbbr = '${req.params.marketAbbr}' AND MarketType = '${req.params.marketType}'
             ORDER BY UNIX_TIMESTAMP(DateTime) DESC LIMIT 50`,
         (qerr, qres) => {
+            console.log(qerr)
             let ret = {
                 MarketAbbr: req.params.marketAbbr,
                 MarketType: req.params.marketType,
