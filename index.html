@@ -10,8 +10,9 @@
 <body>
     <script>
         $(document).ready(() =>{
-            $.getJSON("markets/crypto/btc", (data) => {
-                console.log(data)
+            $.getJSON("markets/crypto/btc", (marketData) => {
+                console.log(Math.max(...marketData.data.map(o => o.value), 0),
+                    Math.min(...marketData.data.map(o => o.value)))
             })
         })
     </script>
