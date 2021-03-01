@@ -18,8 +18,6 @@ app.get("/", (req, res) => {
 app.get("/markets/:marketType/:marketAbbr", (req, res) => {
     //Selects the amount of datapoints to display
     let dpcount = (req.query.dpcount) ? req.query.dpcount : 1440
-    console.log(dpcount)
-    console.log(req.query)
 
     //TODO: THIS INPUT NEEDS TO BE SANITIZED
     con.query(`
@@ -39,6 +37,19 @@ app.get("/markets/:marketType/:marketAbbr", (req, res) => {
             }
             res.send(JSON.stringify(ret))
         })
+})
+
+//TODO: add some form of security to this lmao
+app.get("/users/:userID", (req, res) => {
+    //TODO: sanitize input fields
+    con.query(`
+        SELECT MarketType, MarketAbbr, IsHeld, Amount, BuyPrice
+        FROM portfoliocontent
+        WHERE ${req.params.userID} = portfoliocontent.UserID`,
+        (qerr, qres) => {
+            res.send(JSON.stringify({ UserID: req.params.userID, data: qres }))
+        }
+    )
 })
 
 app.listen(7000, () => { console.log("Webserver started on port 7000") })
