@@ -24,7 +24,7 @@
     <canvas width="1000" height="600" id="cv"></canvas>
 
     <label for="graph-dropdown">Displaying:</label>
-    <select name="graph-dropdown" id="graph-dropdown"></select>
+    <select name="graph-dropdown" id="graph-dropdown" onchange="ChangeCurrentGraph(this.value)"></select>
 
     <table id="change-table">
         <tbody>
@@ -93,9 +93,16 @@
             `)
         }
 
+        function ChangeCurrentGraph(marketAbbr) {
+            let cv = document.getElementById("cv")
+            let marketData = marketInfo.find(e => e.MarketAbbr === marketAbbr)
+            GraphMarket(marketData, vc, "#F00")
+        }
+
         //Graphs a market based on the market data, a reference to the canvas on which is is to be drawn and the color
         function GraphMarket(marketData, cv, color) {
             let ctx = cv.getContext('2d')
+            ctx.clearRect(0, 0, cv.width, cv.height);
             ctx.strokeStyle = color
 
             let min = Math.min(...marketData.data.map(o => o.Value))
