@@ -1,0 +1,30 @@
+{
+  "name": "portfolio-manager",
+  "version": "1.0.0",
+  "description": "A customised portfolio manager because all of the free ones dont seem to do what I want",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheGoldenFyre/portfolio-manager.git"
+  },
+  "keywords": [
+    "crypto",
+    "stocks",
+    "portfolio"
+  ],
+  "author": "Thomas van der Plas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheGoldenFyre/portfolio-manager/issues"
+  },
+  "homepage": "https://github.com/TheGoldenFyre/portfolio-manager#readme",
+  "dependencies": {
+    "mysql": "^2.18.1",
+    "node-schedule": "^2.0.0",
+    "request": "^2.88.2"
+  }
+}
