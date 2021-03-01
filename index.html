@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,14 +8,45 @@
     <title>Testing</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
+
 <body>
+    <canvas width="1000" height="600" id="cv"></canvas>
+
     <script>
-        $(document).ready(() =>{
+        $(document).ready(() => {
+            let cv = document.getElementById("cv")
+            let ctx = cv.getContext('2d')
+
             $.getJSON("markets/crypto/btc", (marketData) => {
-                console.log(Math.max(...marketData.data.map(o => o.Value), 0),
-                    Math.min(...marketData.data.map(o => o.Value)))
+                let min = Math.min(...marketData.data.map(o => o.Value))
+                let max = Math.max(...marketData.data.map(o => o.Value))
+
+                let p = ScalePoint(
+                    { x: 0, y: marketData[0].Value },
+                    { width: cv.width, height: cv.height },
+                    { len: marketData.length, min: min, max: max })
+                ctx.beginPath()
+
+                ctx.moveTo(p.x, p.y)
+                for (let i = 1; i < marketData.length; i++) {
+                    p = ScalePoint(
+                        { x: i, y: marketData[i].Value },
+                        { width: cv.width, height: cv.height },
+                        { len: marketData.length, min: min, max: max })
+                    ctx.lineTo(p.x, p.y)
+                }
+                ctx.stroke()
             })
         })
+
+        //Scales a point for given canvas dimensions and data dimensions.
+        function ScalePoint(p, cDims, dDims) {
+            let ret = { x: 0, y: 0 }
+            ret.x = p.x / dDims.len * cDims.width
+            ret.y = (p.y - dDims.min) / (dDims.max - dDims.min) * cDims.height
+            return ret
+        }
     </script>
 </body>
+
 </html>
