@@ -22,14 +22,31 @@
             
             $.getJSON(`users/1`, (userData) => {
                 //Get the info for each portfolio item
+                //TODO: no duplicate market requests
                 userData.data.forEach(pItem => {
-                    $.getJSON(`markets/crypto/${pItem.MarketAbbr}?dpcount=${dpcount}`, (marketData) => {
-                        let currentValue = marketData.data[marketData.data.length - 1].Value * pItem.Amount;
-                        console.log(`Current ${pItem.MarketAbbr} val: ${currentValue}`, `Change: ${currentValue - pItem.BuyPrice} | ${(currentValue / pItem.BuyPrice - 1) * 100}%`)
-                    })
+                    let existingMInfo = marketInfo.find(e => e.MarketAbbr === pItem.MarketAbbr)
+                    if (existingMInfo) {
+                        //If it's already in out info, we dont need to request again
+                        HandlePortfolioItem(pItem, existingMInfo, false)
+                    } else {
+                        $.getJSON(`markets/crypto/${pItem.MarketAbbr}?dpcount=${dpcount}`, (marketData) => {                
+                            HandlePortfolioItem(pItem, marketData, true)
+                            if (!marketInfo.some(e => e.MarketAbbr === pItem.MarketAbbr))
+                                marketInfo.push(marketData)
+                        })
+                    }
                 });
             })
         })
+
+        function HandlePortfolioItem(pItem, marketData, shouldGraph) {
+            let currentValue = marketData.data[marketData.data.length - 1].Value * pItem.Amount;
+            console.log(`Current ${pItem.MarketAbbr} val: ${currentValue}`,
+                `Change: ${currentValue - pItem.BuyPrice} | ${(currentValue / pItem.BuyPrice - 1) * 100}%`)
+            
+            if (shouldGraph)
+                GraphMarket(marketData, cv, "#FF00FF")
+        }
 
         //Graphs a market based on the market data, a reference to the canvas on which is is to be drawn and the color
         function GraphMarket(marketData, cv, color) {
