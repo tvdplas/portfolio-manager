@@ -25,7 +25,7 @@
                 userData.data.forEach(pItem => {
                     $.getJSON(`markets/crypto/${pItem.MarketAbbr}?dpcount=${dpcount}`, (marketData) => {
                         let currentValue = marketData.data[marketData.data.length - 1].Value * pItem.Amount;
-                        console.log(`Current ${pItem.MarketAbbr} val: ${currentValue}`, `Change: ${pItem.BuyPrice} | ${(currentValue / pItem.BuyPrice - 1) * 100}%`)
+                        console.log(`Current ${pItem.MarketAbbr} val: ${currentValue}`, `Change: ${currentValue - pItem.BuyPrice} | ${(currentValue / pItem.BuyPrice - 1) * 100}%`)
                     })
                 });
             })
