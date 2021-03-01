@@ -22,7 +22,7 @@ app.get("/markets/:marketType/:marketAbbr", (req, res) => {
             SELECT DataTime, CurrencyAbbr, Value
             FROM marketvalue 
             WHERE MarketAbbr = '${req.params.marketAbbr}' AND MarketType = '${req.params.marketType}'
-            ORDER BY UNIX_TIMESTAMP(DateTime) DESC LIMIT 50`,
+            ORDER BY UNIX_TIMESTAMP(DataTime) DESC LIMIT 50`,
         (qerr, qres) => {
             console.log(qerr)
             let ret = {
