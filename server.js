@@ -19,6 +19,7 @@ app.get("/markets/:marketType/:marketAbbr", (req, res) => {
     //Selects the amount of datapoints to display
     let dpcount = (req.query.dpcount) ? req.query.dpcount : 1440
     console.log(dpcount)
+    console.log(req.query)
 
     //TODO: THIS INPUT NEEDS TO BE SANITIZED
     con.query(`
