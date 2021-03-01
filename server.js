@@ -14,14 +14,23 @@ app.get("/", (req, res) => {
     res.sendFile(path.resolve("./index.html"))
 })
 
-app.get("/markets/:marketID", (req, res) => {
+app.get("/markets/:marketType/:marketAbbr", (req, res) => {
     con.connect((err) => {
         if (err) throw err;
 
 
         //TODO: THIS INPUT NEEDS TO BE SANITIZED
-        con.query(`SELECT * FROM marketvalue WHERE MarketAbbr = '${req.params.marketID}';`, (qerr, qres) => {
-            res.send(JSON.stringify(qres))
+        con.query(`
+            SELECT DataTime, CurrencyAbbr, Value
+            FROM marketvalue 
+            WHERE MarketAbbr = '${req.params.marketAbbr}' AND MarketType = '${req.params.marketType}';`,
+        (qerr, qres) => {
+            let ret = {
+                MarketAbbr: req.params.marketAbbr,
+                MarketType: req.params.marketType,
+                data: qres 
+            }
+            res.send(JSON.stringify(ret))
         })
     })
 })
