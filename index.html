@@ -15,29 +15,42 @@
     <script>
         $(document).ready(() => {
             let cv = document.getElementById("cv")
-            let ctx = cv.getContext('2d')
+
 
             $.getJSON("markets/crypto/btc", (marketData) => {
-                let min = Math.min(...marketData.data.map(o => o.Value))
-                let max = Math.max(...marketData.data.map(o => o.Value))
-                
-                let p = ScalePoint(
-                    { x: 0, y: marketData.data[0].Value },
-                    { width: cv.width, height: cv.height },
-                    { len: marketData.data.length, min: min, max: max })
-                ctx.beginPath()
-
-                ctx.moveTo(p.x, p.y)
-                for (let i = 1; i < marketData.data.length; i++) {
-                    p = ScalePoint(
-                        { x: i, y: marketData.data[i].Value },
-                        { width: cv.width, height: cv.height },
-                        { len: marketData.data.length, min: min, max: max })
-                    ctx.lineTo(p.x, p.y)
-                }
-                ctx.stroke()
+                GraphMarket(marketData, cv)
+            })
+            $.getJSON("markets/crypto/ada", (marketData) => {
+                GraphMarket(marketData, cv)
+            })
+            $.getJSON("markets/crypto/enj", (marketData) => {
+                GraphMarket(marketData, cv)
             })
         })
+
+        function GraphMarket(marketData, cv) {
+            let ctx = cv.getContext('2d')
+
+            let min = Math.min(...marketData.data.map(o => o.Value))
+            let max = Math.max(...marketData.data.map(o => o.Value))
+
+            let p = ScalePoint(
+                { x: 0, y: marketData.data[0].Value },
+                { width: cv.width, height: cv.height },
+                { len: marketData.data.length, min: min, max: max })
+            ctx.beginPath()
+
+            ctx.moveTo(p.x, p.y)
+            for (let i = 1; i < marketData.data.length; i++) {
+                p = ScalePoint(
+                    { x: i, y: marketData.data[i].Value },
+                    { width: cv.width, height: cv.height },
+                    { len: marketData.data.length, min: min, max: max })
+                ctx.lineTo(p.x, p.y)
+            }
+            ctx.stroke()
+
+        }
 
         //Scales a point for given canvas dimensions and data dimensions.
         function ScalePoint(p, cDims, dDims) {
