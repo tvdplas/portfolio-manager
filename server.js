@@ -3,7 +3,7 @@ let app = express()
 let path = require("path")
 
 let mysql = require("mysql")
-let con = con = mysql.createConnection({
+let con = mysql.createConnection({
     host: "192.168.2.35",
     user: "crypto",
     password: "CryptoStonks",
