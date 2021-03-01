@@ -63,10 +63,10 @@
                             //Recheck to see if the marketinfo wasnt asynchronously added, if not, add it to the array
                             if (!marketInfo.some(e => e.MarketAbbr === pItem.MarketAbbr)) {
                                 marketInfo.push(marketData)
-                                if ($("#graph-dropdown > *").length == 0)
+                                if ($("#graph-dropdown").children().length == 0)
                                     GraphMarket(marketData, cv, "#FF0000")
                                 
-                                if (!$("#graph-dropdown > *").some(e => e.value === pItem.MarketAbbr)) {
+                                if (!$("#graph-dropdown").children().some(e => e.value === pItem.MarketAbbr)) {
                                     $("#graph-dropdown").append(`
                                         <option value=${pItem.MarketAbbr}>${pItem.MarketAbbr}</option> 
                                     `)
