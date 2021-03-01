@@ -20,19 +20,19 @@
             $.getJSON("markets/crypto/btc", (marketData) => {
                 let min = Math.min(...marketData.data.map(o => o.Value))
                 let max = Math.max(...marketData.data.map(o => o.Value))
-
+                
                 let p = ScalePoint(
-                    { x: 0, y: marketData[0].Value },
+                    { x: 0, y: marketData.data[0].Value },
                     { width: cv.width, height: cv.height },
-                    { len: marketData.length, min: min, max: max })
+                    { len: marketData.data.length, min: min, max: max })
                 ctx.beginPath()
 
                 ctx.moveTo(p.x, p.y)
-                for (let i = 1; i < marketData.length; i++) {
+                for (let i = 1; i < marketData.data.length; i++) {
                     p = ScalePoint(
-                        { x: i, y: marketData[i].Value },
+                        { x: i, y: marketData.data[i].Value },
                         { width: cv.width, height: cv.height },
-                        { len: marketData.length, min: min, max: max })
+                        { len: marketData.data.length, min: min, max: max })
                     ctx.lineTo(p.x, p.y)
                 }
                 ctx.stroke()
