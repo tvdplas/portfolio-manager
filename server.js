@@ -26,7 +26,7 @@ app.get("/markets/:marketType/:marketAbbr", (req, res) => {
             let ret = {
                 MarketAbbr: req.params.marketAbbr,
                 MarketType: req.params.marketType,
-                data: qres
+                data: JSON.parse(qres)
             }
             res.send(JSON.stringify(ret))
 
