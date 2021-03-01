@@ -7,6 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Testing</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        #table-positive {
+            color: greenyellow;
+        }
+        #table-negative {
+            color: red;
+        }
+    </style>
 </head>
 
 <body>
@@ -60,7 +68,7 @@
             let currentValue = marketData.data[marketData.data.length - 1].Value * pItem.Amount
 
             $('#change-table > tbody:last-child').append(`
-                <tr>
+                <tr class=${currentValue > pItem.BuyPrice ? "table-positive" : "table-negative"}>
                     <td>${pItem.MarketAbbr}</td>
                     <td>${pItem.Amount}</td>
                     <td>${(currentValue).toFixed(2)}</td>
