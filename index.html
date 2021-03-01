@@ -63,9 +63,9 @@
                 <tr>
                     <td>${pItem.MarketAbbr}</td>
                     <td>${pItem.Amount}</td>
-                    <td>${currentValue}</td>
-                    <td>${currentValue - pItem.BuyPrice}</td>
-                    <td>${(currentValue / pItem.BuyPrice - 1) * 100}</td>
+                    <td>${(currentValue).toFixed(2)}</td>
+                    <td>${(currentValue - pItem.BuyPrice).toFixed(2)}</td>
+                    <td>${((currentValue / pItem.BuyPrice - 1) * 100).toFixed(2)}</td>
                 </tr>
             `)
             
