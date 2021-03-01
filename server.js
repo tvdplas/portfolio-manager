@@ -44,7 +44,7 @@ function UpdateMarket(market) {
 
             con.query(`
                 INSERT INTO marketvalue
-                VAlUES ('${MD.DateTime}', '${MD.MarketType}', '${MD.MarketAbbr}', '${MD.CurrencyAbbr}', '${MD.Value.toFixed(7)}')`,
+                VAlUES ('${MD.DateTime}', '${MD.MarketType}', '${MD.MarketAbbr}', '${MD.CurrencyAbbr}', '${MD.Value}')`,
                 (err, res) => {
                     if (err) throw err;
             })
