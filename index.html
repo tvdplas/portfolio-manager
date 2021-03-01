@@ -12,6 +12,17 @@
 <body>
     <canvas width="1000" height="600" id="cv"></canvas>
 
+    <table id="change-table">
+        <tbody>
+            <tr>
+                <th>Market</th>
+                <th>Amount</th>
+                <th>Value</th>
+                <th>Change</th>
+                <th>Change (%)</th>
+            </tr>
+        </tbody>
+    </table>
     <script>
         let marketInfo = [] //Holds all the information about the active markets
 
@@ -24,13 +35,18 @@
                 //Get the info for each portfolio item
                 //TODO: no duplicate market requests
                 userData.data.forEach(pItem => {
+                    //Try to find an existing market info in memory
                     let existingMInfo = marketInfo.find(e => e.MarketAbbr === pItem.MarketAbbr)
+
                     if (existingMInfo) {
                         //If it's already in out info, we dont need to request again
                         HandlePortfolioItem(pItem, existingMInfo, false)
                     } else {
+                        //No market info was found, so it needs to be requested
                         $.getJSON(`markets/crypto/${pItem.MarketAbbr}?dpcount=${dpcount}`, (marketData) => {                
                             HandlePortfolioItem(pItem, marketData, true)
+
+                            //Recheck to see if the marketinfo wasnt asynchronously added, if not, add it to the array
                             if (!marketInfo.some(e => e.MarketAbbr === pItem.MarketAbbr))
                                 marketInfo.push(marketData)
                         })
@@ -39,10 +55,19 @@
             })
         })
 
+        //Handles a portfolioitem by showing its graph and its profits/losses
         function HandlePortfolioItem(pItem, marketData, shouldGraph) {
-            let currentValue = marketData.data[marketData.data.length - 1].Value * pItem.Amount;
-            console.log(`Current ${pItem.MarketAbbr} val: ${currentValue}`,
-                `Change: ${currentValue - pItem.BuyPrice} | ${(currentValue / pItem.BuyPrice - 1) * 100}%`)
+            let currentValue = marketData.data[marketData.data.length - 1].Value * pItem.Amount
+
+            $('#change-table > tbody:last-child').append(`
+                <tr>
+                    <td>${pItem.MarketAbbr}</td>
+                    <td>${pItem.Amount}</td>
+                    <td>${currentValue}</td>
+                    <td>${currentValue - pItem.BuyPrice}</td>
+                    <td>${(currentValue / pItem.BuyPrice - 1) * 100}</td>
+                </tr>
+            `)
             
             if (shouldGraph)
                 GraphMarket(marketData, cv, "#FF00FF")
