@@ -26,7 +26,7 @@ app.get("/markets/:marketID", (req, res) => {
     })
 })
 
-
+app.listen(7000, () => {console.log("Webserver started on port 7000")})
 
 
 const valueUpdating = require('./value-update-job')
