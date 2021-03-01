@@ -33,6 +33,7 @@ function UpdateMarket(market) {
             if (reqErr) throw reqErr
 
             let rawMD = JSON.parse(body)
+            console.log(rawMD)
 
             MD = {
                 DateTime: new Date().toISOString().slice(0, 19).replace('T', ' '),
