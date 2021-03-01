@@ -46,7 +46,7 @@ function UpdateMarket(market) {
                 INSERT INTO marketvalue
                 VAlUES ('${MD.DateTime}', '${MD.MarketType}', '${MD.MarketAbbr}', '${MD.CurrencyAbbr}', '${MD.Value}')`,
                 (err, res) => {
-                    if (err) throw err;
+                    //if (err) throw err;
             })
         })
     }
