@@ -31,6 +31,8 @@ app.get("/markets/:marketType/:marketAbbr", (req, res) => {
                 data: qres 
             }
             res.send(JSON.stringify(ret))
+
+            con.end()
         })
     })
 })
