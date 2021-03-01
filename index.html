@@ -8,10 +8,10 @@
     <title>Testing</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <style>
-        .table-positive {
-            color: greenyellow;
+        .table-positive .table-color-adjustable {
+            color: rgb(120, 189, 17);
         }
-        .table-negative {
+        .table-negative .table-color-adjustable {
             color: red;
         }
     </style>
@@ -71,9 +71,9 @@
                 <tr class=${currentValue > pItem.BuyPrice ? "table-positive" : "table-negative"}>
                     <td>${pItem.MarketAbbr}</td>
                     <td>${pItem.Amount}</td>
-                    <td>${(currentValue).toFixed(2)}</td>
-                    <td>${(currentValue - pItem.BuyPrice).toFixed(2)}</td>
-                    <td>${((currentValue / pItem.BuyPrice - 1) * 100).toFixed(2)}</td>
+                    <td class="table-color-adjustable">${(currentValue).toFixed(2)}</td>
+                    <td class="table-color-adjustable">${(currentValue - pItem.BuyPrice).toFixed(2)}</td>
+                    <td class="table-color-adjustable">${((currentValue / pItem.BuyPrice - 1) * 100).toFixed(2)}</td>
                 </tr>
             `)
             
