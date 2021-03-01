@@ -16,6 +16,9 @@ app.get("/", (req, res) => {
 })
 
 app.get("/markets/:marketType/:marketAbbr", (req, res) => {
+    //Selects the amount of datapoints to display
+    let dpcount = (req.query.dpcount) ? req.query.dpcount : 1440
+    console.log(dpcount)
 
     //TODO: THIS INPUT NEEDS TO BE SANITIZED
     con.query(`
@@ -24,11 +27,10 @@ app.get("/markets/:marketType/:marketAbbr", (req, res) => {
             SELECT DataTime, CurrencyAbbr, Value
             FROM marketvalue 
             WHERE MarketAbbr = '${req.params.marketAbbr}' AND MarketType = '${req.params.marketType}'
-            ORDER BY UNIX_TIMESTAMP(DataTime) DESC LIMIT 50
+            ORDER BY UNIX_TIMESTAMP(DataTime) DESC LIMIT ${dpcount}
         ) AS T
         ORDER BY UNIX_TIMESTAMP(T.DataTime) ASC`,
         (qerr, qres) => {
-            console.log(qerr)
             let ret = {
                 MarketAbbr: req.params.marketAbbr,
                 MarketType: req.params.marketType,
