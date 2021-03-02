@@ -65,6 +65,9 @@ function UpdateMarket(market, date) {
                     CurrencyAbbr: "EUR",
                     Value: rawMD.EUR[0].pxSous
                 }
+                
+                console.log(rawMD.EUR[0])
+                console.log(MD.Value)
     
                 con.query(`
                     INSERT INTO marketvalue
