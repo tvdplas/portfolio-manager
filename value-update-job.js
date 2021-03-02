@@ -29,7 +29,7 @@ function UpdateMarketValues() {
 
 function UpdateMarket(market, date) {
     //First, get the new value for the market
-    if (market.MarketType = "crypto") {
+    if (market.MarketType == "crypto") {
         request(`https://api.litebit.eu/market/${market.MarketAbbr}`, (reqErr, res, body) => {
             if (reqErr) throw reqErr
 
