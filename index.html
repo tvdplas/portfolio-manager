@@ -196,7 +196,11 @@
 
             let ret = { x: 0, y: 0 }
             ret.x = hPadding * cDims.width + p.x / dDims.len * (cDims.width * (1 - 2 * hPadding))
-            ret.y = cDims.height * (1 - vPadding) - ((p.y - dDims.min) / (dDims.max - dDims.min) * cDims.height * (1 - 2 * vPadding))
+            if (dDims.min == dDims.max) {
+                ret.y = cDims.height * 0.5
+            } else {
+                ret.y = cDims.height * (1 - vPadding) - ((p.y - dDims.min) / (dDims.max - dDims.min) * cDims.height * (1 - 2 * vPadding))
+            }
             return ret
         }
     </script>
