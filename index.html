@@ -43,8 +43,6 @@
         let marketInfo = [] //Holds all the information about the active markets
 
         $(document).ready(() => {
-            const dpcount = new URLSearchParams(window.location.search).get('dpcount') ?? 1440
-
             let cv = document.getElementById("cv")
 
             $.getJSON(`users/1`, (userData) => {
@@ -66,6 +64,8 @@
         })
 
         function FetchMarket(pItem) {
+            const dpcount = new URLSearchParams(window.location.search).get('dpcount') ?? 1440
+
             $.getJSON(`markets/${pItem.MarketType}/${pItem.MarketAbbr}?dpcount=${dpcount}`, (marketData) => {
                 HandlePortfolioItem(pItem, marketData)
 
