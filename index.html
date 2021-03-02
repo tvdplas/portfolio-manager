@@ -169,8 +169,8 @@
                     { width: cv.width, height: cv.height },
                     { len: marketData.data.length, min: min, max: max })
                 
-                if (p.y == min) {
-                    ctx.fillText('Wakka', p.x, p.y)
+                if (marketData.data[i].Value == min || marketData.data[i].Value == max) {
+                    ctx.fillText(`€${marketData.data[i].Value}`, p.x, p.y)
                 }
 
                 ctx.lineTo(p.x, p.y)
