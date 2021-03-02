@@ -51,6 +51,30 @@ function UpdateMarket(market, date) {
             })
         })
     }
+    else if (market.MarketType == "fund") {
+        if(date.getMinutes == 0) {
+            request(`https://www.fundsquare.net/Fundsquare/application/vni/${market.MarketAbbr}`, (reqErr, res, body) => {
+                if (reqErr) throw reqErr
+    
+                let rawMD = JSON.parse(body)
+    
+                let MD = {
+                    DateTime: date,
+                    MarketType: market.MarketType,
+                    MarketAbbr: market.MarketAbbr,
+                    CurrencyAbbr: "EUR",
+                    Value: rawMD.EUR[0].pxSous
+                }
+    
+                con.query(`
+                    INSERT INTO marketvalue
+                    VAlUES ('${MD.DateTime}', '${MD.MarketType}', '${MD.MarketAbbr}', '${MD.CurrencyAbbr}', '${MD.Value}')`,
+                    (err, res) => {
+                        if (err) throw err;
+                })
+            })
+        }
+    }
     else {
         throw new Error("No valid market type found")
     }
