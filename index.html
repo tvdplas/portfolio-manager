@@ -76,7 +76,8 @@
                 
             })
         })
-
+        
+        //(Re)creates the total row with the current values in the portfolio
         function UpdateTotalRow() {
             $("#total-row").remove()
 
@@ -92,7 +93,9 @@
             `)
         }
 
+        //Fetches the market data from the server for the given portfolio item
         function FetchMarket(pItem) {
+            //Gives the amount of datapoints that need to be retrieved
             const dpcount = new URLSearchParams(window.location.search).get('dpcount') ?? 1440
 
             $.getJSON(`markets/${pItem.MarketType}/${pItem.MarketAbbr}?dpcount=${dpcount}`, (marketData) => {
@@ -101,9 +104,12 @@
                 //Recheck to see if the marketinfo wasnt asynchronously added, if not, add it to the array
                 if (!marketInfo.some(e => e.MarketAbbr === pItem.MarketAbbr)) {
                     marketInfo.push(marketData)
+
+                    //If no graph is currently being displayed, make this the one that's being displayed
                     if ($("#graph-dropdown").children().length == 0)
                         GraphMarket(marketData, cv, "#FF0000")
 
+                    //Add the market identifier to the graph selection if it isn't already there
                     if (!$("#graph-dropdown").children().toArray().some(e => e.value === pItem.MarketAbbr)) {
                         $("#graph-dropdown").append(`
                             <option value=${pItem.MarketAbbr}>${pItem.MarketAbbr}</option> 
@@ -115,10 +121,13 @@
 
         //Handles a portfolioitem by showing its graph and its profits/losses
         function HandlePortfolioItem(pItem, marketData) {
+            //Calculates the current value and adds it to the portfolio item
             pItem.currentValue = marketData.data[marketData.data.length - 1].Value * pItem.Amount
-
+            
+            //Then add it to the portfolio in order for it to be used elsewhere
             portfolio.addItem(pItem)
 
+            //Append the portfolio item to the table
             $('#change-table > tbody:last-child').append(`
                 <tr class=${pItem.currentValue > pItem.BuyPrice ? "table-positive" : "table-negative"}>
                     <td>${pItem.MarketAbbr}</td>
@@ -128,9 +137,12 @@
                     <td class="table-color-adjustable">${((pItem.currentValue / pItem.BuyPrice - 1) * 100).toFixed(2)}</td>
                 </tr>
             `)
+
+            //Let the total row update to reflect the new totals
             UpdateTotalRow()
         }
 
+        //Switches the currently displayed graph
         function ChangeCurrentGraph(marketAbbr) {
             let cv = document.getElementById("cv")
             let marketData = marketInfo.find(e => e.MarketAbbr === marketAbbr)
@@ -166,9 +178,11 @@
 
         //Scales a point for given canvas dimensions and data dimensions.
         function ScalePoint(p, cDims, dDims) {
+            let vPadding = 0.05 //Specifies the percentage of the canvas at the top and bottom which is not used for the graph lines 
+
             let ret = { x: 0, y: 0 }
             ret.x = p.x / dDims.len * cDims.width
-            ret.y = cDims.height - ((p.y - dDims.min) / (dDims.max - dDims.min) * cDims.height)
+            ret.y = cDims.height * (1 - vPadding) - ((p.y - dDims.min) / (dDims.max - dDims.min) * cDims.height * (1 - 2 * vPadding))
             return ret
         }
     </script>
