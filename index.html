@@ -73,18 +73,24 @@
                     }
                 });
 
-                //Once all items have been handled, we can add a total row to the table
-                $('#change-table > tbody:last-child').append(`
-                    <tr class=${portfolio.totalValue > portfolio.totalPrice ? "table-positive" : "table-negative"}>
-                        <td>Total</td>
-                        <td>-</td>
-                        <td>${(portfolio.totalValue).toFixed(2)}</td>
-                        <td class="table-color-adjustable">${(portfolio.totalChange).toFixed(2)}</td>
-                        <td class="table-color-adjustable">${(portfolio.totalChangeP).toFixed(2)}</td>
-                    </tr>
-                `)
+                
             })
         })
+
+        function UpdateTotalRow() {
+            $("#total-row").remove()
+
+            //Once all items have been handled, we can add a total row to the table
+            $('#change-table > tbody:last-child').append(`
+                <tr id="total-row" class=${portfolio.totalValue > portfolio.totalPrice ? "table-positive" : "table-negative"}>
+                    <td>Total</td>
+                    <td>-</td>
+                    <td>${(portfolio.totalValue).toFixed(2)}</td>
+                    <td class="table-color-adjustable">${(portfolio.totalChange).toFixed(2)}</td>
+                    <td class="table-color-adjustable">${(portfolio.totalChangeP).toFixed(2)}</td>
+                </tr>
+            `)
+        }
 
         function FetchMarket(pItem) {
             const dpcount = new URLSearchParams(window.location.search).get('dpcount') ?? 1440
@@ -122,6 +128,7 @@
                     <td class="table-color-adjustable">${((pItem.currentValue / pItem.BuyPrice - 1) * 100).toFixed(2)}</td>
                 </tr>
             `)
+            UpdateTotalRow()
         }
 
         function ChangeCurrentGraph(marketAbbr) {
