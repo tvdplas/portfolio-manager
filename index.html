@@ -11,9 +11,11 @@
         .change-table {
             padding: 25px;
         }
+
         .table-positive .table-color-adjustable {
             color: rgb(120, 189, 17);
         }
+
         .table-negative .table-color-adjustable {
             color: red;
         }
@@ -42,9 +44,9 @@
 
         $(document).ready(() => {
             const dpcount = new URLSearchParams(window.location.search).get('dpcount') ?? 1440
-            
+
             let cv = document.getElementById("cv")
-            
+
             $.getJSON(`users/1`, (userData) => {
                 //Get the info for each portfolio item
                 //TODO: no duplicate market requests
@@ -57,26 +59,30 @@
                         HandlePortfolioItem(pItem, existingMInfo)
                     } else {
                         //No market info was found, so it needs to be requested
-                        $.getJSON(`markets/crypto/${pItem.MarketAbbr}?dpcount=${dpcount}`, (marketData) => {                
-                            HandlePortfolioItem(pItem, marketData)
-
-                            //Recheck to see if the marketinfo wasnt asynchronously added, if not, add it to the array
-                            if (!marketInfo.some(e => e.MarketAbbr === pItem.MarketAbbr)) {
-                                marketInfo.push(marketData)
-                                if ($("#graph-dropdown").children().length == 0)
-                                    GraphMarket(marketData, cv, "#FF0000")
-                                
-                                if (!$("#graph-dropdown").children().toArray().some(e => e.value === pItem.MarketAbbr)) {
-                                    $("#graph-dropdown").append(`
-                                        <option value=${pItem.MarketAbbr}>${pItem.MarketAbbr}</option> 
-                                    `)
-                                }
-                            }
-                        })
+                        FetchMarket(pItem)
                     }
                 });
             })
         })
+
+        function FetchMarket(pItem) {
+            $.getJSON(`markets/${pItem.MarketType}/${pItem.MarketAbbr}?dpcount=${dpcount}`, (marketData) => {
+                HandlePortfolioItem(pItem, marketData)
+
+                //Recheck to see if the marketinfo wasnt asynchronously added, if not, add it to the array
+                if (!marketInfo.some(e => e.MarketAbbr === pItem.MarketAbbr)) {
+                    marketInfo.push(marketData)
+                    if ($("#graph-dropdown").children().length == 0)
+                        GraphMarket(marketData, cv, "#FF0000")
+
+                    if (!$("#graph-dropdown").children().toArray().some(e => e.value === pItem.MarketAbbr)) {
+                        $("#graph-dropdown").append(`
+                            <option value=${pItem.MarketAbbr}>${pItem.MarketAbbr}</option> 
+                        `)
+                    }
+                }
+            })
+        }
 
         //Handles a portfolioitem by showing its graph and its profits/losses
         function HandlePortfolioItem(pItem, marketData) {
