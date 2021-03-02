@@ -72,8 +72,6 @@
                         FetchMarket(pItem)
                     }
                 });
-
-                
             })
         })
         
@@ -170,6 +168,11 @@
                     { x: i, y: marketData.data[i].Value },
                     { width: cv.width, height: cv.height },
                     { len: marketData.data.length, min: min, max: max })
+                
+                if (p.y == min) {
+                    ctx.fillText('Wakka', p.x, p.y)
+                }
+
                 ctx.lineTo(p.x, p.y)
             }
             ctx.stroke()
