@@ -154,10 +154,10 @@
         }
 
         //Graphs a market based on the market data, a reference to the canvas on which is is to be drawn and the color
-        function GraphMarket(marketData, cv, color) {
+        function GraphMarket(marketData, cv) {
             let ctx = cv.getContext('2d')
             ctx.clearRect(0, 0, cv.width, cv.height);
-            ctx.strokeStyle = color
+            ctx.strokeStyle = (marketData.data[0].Value > marketData.data[marketData.data.length - 1].Value) ? "#0f0" : "#f00"
 
             let min = Math.min(...marketData.data.map(o => o.Value))
             let max = Math.max(...marketData.data.map(o => o.Value))
@@ -166,6 +166,7 @@
                 { x: 0, y: marketData.data[0].Value },
                 { width: cv.width, height: cv.height },
                 { len: marketData.data.length, min: min, max: max })
+            
             ctx.beginPath()
 
             ctx.moveTo(p.x, p.y)
@@ -175,6 +176,7 @@
                     { width: cv.width, height: cv.height },
                     { len: marketData.data.length, min: min, max: max })
                 
+                //Add labels to low and high points
                 if (marketData.data[i].Value == max) {
                     ctx.fillText(`€${marketData.data[i].Value}`, p.x, p.y - cv.height * 0.01)
                 }
@@ -185,7 +187,6 @@
                 ctx.lineTo(p.x, p.y)
             }
             ctx.stroke()
-
         }
 
         //Scales a point for given canvas dimensions and data dimensions.
