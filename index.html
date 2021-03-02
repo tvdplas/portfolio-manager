@@ -41,13 +41,25 @@
     </table>
     <script>
         let marketInfo = [] //Holds all the information about the active markets
+        let portfolio = {
+            totalValue: 0,
+            totalPrice: 0,
+            totalChange: 0,
+            totalChangeP: 0,
+            content: [],
+            addItem: function(item) {
+                this.content.push(item)
+                this.totalValue += item.currentValue
+                this.totalPrice += item.BuyPrice
+                this.totalChange = this.totalValue - this.totalPrice
+                this.totalChangeP = this.currentValue / this.BuyPrice - 1
+            }
+        }
+             //Holds all of the portfolio content for the user
 
         $(document).ready(() => {
-            let cv = document.getElementById("cv")
-
             $.getJSON(`users/1`, (userData) => {
                 //Get the info for each portfolio item
-                //TODO: no duplicate market requests
                 userData.data.forEach(pItem => {
                     //Try to find an existing market info in memory
                     let existingMInfo = marketInfo.find(e => e.MarketAbbr === pItem.MarketAbbr)
@@ -60,6 +72,17 @@
                         FetchMarket(pItem)
                     }
                 });
+
+                //Once all items have been handled, we can add a total row to the table
+                $('#change-table > tbody:last-child').append(`
+                    <tr class=${portfolio.totalValue > portfolio.totalPrice ? "table-positive" : "table-negative"}>
+                        <td>Total</td>
+                        <td>-</td>
+                        <td>${(portfolio.totalValue).toFixed(2)}</td>
+                        <td class="table-color-adjustable">${(portfolio.totalChange).toFixed(2)}</td>
+                        <td class="table-color-adjustable">${(portfolio.totalChangeP).toFixed(2)}</td>
+                    </tr>
+                `)
             })
         })
 
@@ -86,15 +109,17 @@
 
         //Handles a portfolioitem by showing its graph and its profits/losses
         function HandlePortfolioItem(pItem, marketData) {
-            let currentValue = marketData.data[marketData.data.length - 1].Value * pItem.Amount
+            pItem.currentValue = marketData.data[marketData.data.length - 1].Value * pItem.Amount
+
+            portfolio.addItem(pItem)
 
             $('#change-table > tbody:last-child').append(`
-                <tr class=${currentValue > pItem.BuyPrice ? "table-positive" : "table-negative"}>
+                <tr class=${pItem.currentValue > pItem.BuyPrice ? "table-positive" : "table-negative"}>
                     <td>${pItem.MarketAbbr}</td>
                     <td>${pItem.Amount}</td>
-                    <td>${(currentValue).toFixed(2)}</td>
-                    <td class="table-color-adjustable">${(currentValue - pItem.BuyPrice).toFixed(2)}</td>
-                    <td class="table-color-adjustable">${((currentValue / pItem.BuyPrice - 1) * 100).toFixed(2)}</td>
+                    <td>${(pItem.currentValue).toFixed(2)}</td>
+                    <td class="table-color-adjustable">${(pItem.currentValue - pItem.BuyPrice).toFixed(2)}</td>
+                    <td class="table-color-adjustable">${((pItem.currentValue / pItem.BuyPrice - 1) * 100).toFixed(2)}</td>
                 </tr>
             `)
         }
