@@ -173,7 +173,7 @@
                     ctx.fillText(`€${marketData.data[i].Value}`, p.x, p.y - cv.height * 0.01)
                 }
                 if (marketData.data[i].Value == min) {
-                    ctx.fillText(`€${marketData.data[i].Value}`, p.x, p.y + cv.height * 0.01)
+                    ctx.fillText(`€${marketData.data[i].Value}`, p.x, p.y + cv.height * 0.03)
                 }
 
                 ctx.lineTo(p.x, p.y)
@@ -185,9 +185,10 @@
         //Scales a point for given canvas dimensions and data dimensions.
         function ScalePoint(p, cDims, dDims) {
             let vPadding = 0.05 //Specifies the percentage of the canvas at the top and bottom which is not used for the graph lines 
+            let hPadding = 0.05 //Specifies the percentage of the canvas on the sides which is not used for the graph lines
 
             let ret = { x: 0, y: 0 }
-            ret.x = p.x / dDims.len * cDims.width
+            ret.x = hPadding * cDims.width + p.x / dDims.len * (cDims.width * (1 - 2 * hPadding))
             ret.y = cDims.height * (1 - vPadding) - ((p.y - dDims.min) / (dDims.max - dDims.min) * cDims.height * (1 - 2 * vPadding))
             return ret
         }
