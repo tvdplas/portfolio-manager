@@ -54,12 +54,12 @@ app.get("/users/:userID", (req, res) => {
     )
 })
 
-//io.on('connection', (socket) => {
-//    console.log('User connected')
-//})
+io.on('connection', (socket) => {
+    console.log('User connected')
+})
 
 http.listen(7000, () => { console.log("Webserver started on port 7000") })
 
 require('./value-update-job')((market) => {
-    //io.emit('market-update', market)
+    io.emit('market-update', market)
 })
