@@ -14,7 +14,7 @@ con.connect((err) => { if (err) throw err })
 var cb;
 
 function Schedule(callback) {
-    let cb = callback
+    cb = callback
     // Update all market values in the database every minute.
     const job = schedule.scheduleJob("*/1 * * * *", UpdateMarketValues)
 }
