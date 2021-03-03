@@ -54,7 +54,7 @@ function UpdateMarket(market, date) {
                 (err, res) => {
                     if (err) throw err;
                 
-                cb(market)
+                cb(MD)
             })
         })
     }
@@ -82,7 +82,7 @@ function UpdateMarket(market, date) {
                     (err, res) => {
                         if (err) throw err;
 
-                    cb(market)
+                    cb(MD)
                 })
             })
         }
