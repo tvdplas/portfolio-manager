@@ -110,6 +110,7 @@
                     marketInfo.push(marketData)
 
                     const displayedGraph = new URLSearchParams(window.location.search).get('dgraph') ?? 'none'
+                    console.log(displayedGraph)
 
                     //If no graph is currently being displayed, make this the one that's being displayed
                     if ($("#graph-dropdown").children().length == 0 && ( displayedGraph == "none" || marketData.MarketAbbr == displayedGraph))
