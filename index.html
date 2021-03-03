@@ -45,6 +45,12 @@
             </tr>
         </tbody>
     </table>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+
+        socket.on('market-update', (data) => console.log(data))
+    </script>
     <script>
         let marketInfo = [] //Holds all the information about the active markets
         let portfolio = {

@@ -1,5 +1,7 @@
 let express = require("express")
 let app = express()
+let http = require('http').createServer(app)
+let io = require('socket.io')(http)
 let path = require("path")
 
 let mysql = require("mysql")
@@ -52,9 +54,12 @@ app.get("/users/:userID", (req, res) => {
     )
 })
 
-app.listen(7000, () => { console.log("Webserver started on port 7000") })
+io.on('connection', (socket) => {
+    console.log('User connected')
+})
 
+http.listen(7000, () => { console.log("Webserver started on port 7000") })
 
 require('./value-update-job')((market) => {
-    console.log(market.MarketAbbr)
+    io.emit('market-update', market)
 })
