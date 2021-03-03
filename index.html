@@ -50,14 +50,7 @@
         var socket = io();
         let marketInfo = [] //Holds all the information about the active markets
         let portfolio = {
-            totalValue: 0,
-            totalPrice: 0,
-            totalChange: 0,
-            totalChangeP: 0,
-            content: [],
-            addItem: function(item) {
-                this.content.push(item)
-            }
+            content: []
         }
         let currentGraph = "none"
 
@@ -181,7 +174,7 @@
                 $(`#table-${pItem.MarketType}-${pItem.MarketAbbr}`).replaceWith(trString)
             }
 
-            portfolio.addItem(pItem)   
+            portfolio.content.push(pItem)   
 
             //Let the total row update to reflect the new totals
             UpdateTotalRow()
