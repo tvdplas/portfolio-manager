@@ -73,8 +73,7 @@
                 //Add new info
                 marketInfo[index].data.push({CurrencyAbbr: MD.CurrencyAbbr, Value: MD.Value, DataTime: MD.DataTime, })
                 marketInfo[index].data.shift()
-
-
+                UpdateTableRows(marketInfo[index])
             }
         })
              //Holds all of the portfolio content for the user
@@ -97,7 +96,7 @@
             })
         })
         
-        function UpdateTableRow(marketData) {
+        function UpdateTableRows(marketData) {
             //Get the portfolio items that are associated with the table row
             let pItems = portfolio.content.filter((pItem) => pItem.MarketAbbr == marketData.MarketAbbr && pItem.MarketType == marketData.MarketType)
 
