@@ -109,8 +109,10 @@
                 if (!marketInfo.some(e => e.MarketAbbr === pItem.MarketAbbr)) {
                     marketInfo.push(marketData)
 
+                    const displayedGraph = new URLSearchParams(window.location.search).get('dgraph') ?? 'none'
+
                     //If no graph is currently being displayed, make this the one that's being displayed
-                    if ($("#graph-dropdown").children().length == 0)
+                    if ($("#graph-dropdown").children().length == 0 && ( displayedGraph == "none" || pItem.MarketAbbr == displayedGraph))
                         GraphMarket(marketData, cv, "#FF0000")
 
                     //Add the market identifier to the graph selection if it isn't already there
