@@ -57,10 +57,6 @@
             content: [],
             addItem: function(item) {
                 this.content.push(item)
-                this.totalValue += item.currentValue
-                this.totalPrice += item.BuyPrice
-                this.totalChange = this.totalValue - this.totalPrice
-                this.totalChangeP = (this.totalValue / this.totalPrice - 1) * 100
             }
         }
         let currentGraph = "none"
@@ -113,15 +109,25 @@
         //(Re)creates the total row with the current values in the portfolio
         function UpdateTotalRow() {
             $("#total-row").remove()
+            
+            let totalValue, totalPrice, totalChange, totalChangeP;
+
+            portfolio.content(pc => {
+                totalValue += pc.currentValue
+                totalPrice += pc.BuyPrice
+            })
+
+            totalChange = totalValue - totalPrice
+            totalChangeP = ((totalValue / totalPrice) - 1) * 100
 
             //Once all items have been handled, we can add a total row to the table
             $('#change-table > tbody:last-child').append(`
-                <tr id="total-row" class=${portfolio.totalValue > portfolio.totalPrice ? "table-positive" : "table-negative"}>
+                <tr id="total-row" class=${totalValue > totalPrice ? "table-positive" : "table-negative"}>
                     <td>Total</td>
                     <td>-</td>
-                    <td>${(portfolio.totalValue).toFixed(2)}</td>
-                    <td class="table-color-adjustable">${(portfolio.totalChange).toFixed(2)}</td>
-                    <td class="table-color-adjustable">${(portfolio.totalChangeP).toFixed(2)}</td>
+                    <td>${(totalValue).toFixed(2)}</td>
+                    <td class="table-color-adjustable">${(totalChange).toFixed(2)}</td>
+                    <td class="table-color-adjustable">${(totalChangeP).toFixed(2)}</td>
                 </tr>
             `)
         }
