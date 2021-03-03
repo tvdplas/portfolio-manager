@@ -55,4 +55,6 @@ app.get("/users/:userID", (req, res) => {
 app.listen(7000, () => { console.log("Webserver started on port 7000") })
 
 
-const valueUpdating = require('./value-update-job')
+const valueUpdating = require('./value-update-job')((market) => {
+    console.log(market.MarketAbbr)
+})
