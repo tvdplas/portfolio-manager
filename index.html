@@ -100,16 +100,14 @@
         }
 
         //(Re)creates the total row with the current values in the portfolio
-        function UpdateTotalRow() {
+        function UpdateTotalRow(pItem) {
             $("#total-row").remove()
             
             let totalValue, totalPrice, totalChange, totalChangeP;
 
-            console.log(pc.currentValue, pc.BuyPrice)
-
-            portfolio.content.forEach(pc => {
-                totalValue += pc.currentValue
-                totalPrice += pc.BuyPrice
+            portfolio.content.forEach(pItem => {
+                totalValue += pItem.currentValue
+                totalPrice += pItem.BuyPrice
             })
 
             totalChange = totalValue - totalPrice
@@ -179,7 +177,7 @@
             portfolio.content.push(pItem)   
 
             //Let the total row update to reflect the new totals
-            UpdateTotalRow()
+            UpdateTotalRow(pItem)
         }
 
         //Switches the currently displayed graph
