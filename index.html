@@ -105,9 +105,10 @@
             
             let totalValue, totalPrice, totalChange, totalChangeP;
 
-            portfolio.content.forEach(pItem => {
-                totalValue += pItem.currentValue
-                totalPrice += pItem.BuyPrice
+            portfolio.content.forEach(pc => {
+                console.log(pc)
+                totalValue += pc.currentValue
+                totalPrice += pc.BuyPrice
             })
 
             totalChange = totalValue - totalPrice
