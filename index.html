@@ -103,7 +103,7 @@
         function UpdateTotalRow(pItem) {
             $("#total-row").remove()
             
-            let totalValue, totalPrice, totalChange, totalChangeP;
+            let totalValue = 0, totalPrice = 0, totalChange, totalChangeP;
 
             portfolio.content.forEach(pc => {
                 console.log(pc)
