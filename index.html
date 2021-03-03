@@ -48,10 +48,6 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         var socket = io();
-
-        socket.on('market-update', (data) => console.log(data))
-    </script>
-    <script>
         let marketInfo = [] //Holds all the information about the active markets
         let portfolio = {
             totalValue: 0,
@@ -67,6 +63,20 @@
                 this.totalChangeP = (this.totalValue / this.totalPrice - 1) * 100
             }
         }
+
+        socket.on('market-update', (MD) => {
+            //TODO: Needs to check the market type too
+            let index = marketInfo.findIndex((e) => e.MarketAbbr == MD.MarketAbbr)
+            
+            //Check if the market is even in the users portfolio
+            if(index != -1) {
+                //Add new info
+                marketInfo[index].data.push({CurrencyAbbr: MD.CurrencyAbbr, Value: MD.Value, DataTime: MD.DataTime, })
+                marketInfo[index].data.shift()
+
+
+            }
+        })
              //Holds all of the portfolio content for the user
 
         $(document).ready(() => {
@@ -87,6 +97,16 @@
             })
         })
         
+        function UpdateTableRow(marketData) {
+            //Get the portfolio items that are associated with the table row
+            let pItems = portfolio.content.filter((pItem) => pItem.MarketAbbr == marketData.MarketAbbr && pItem.MarketType == marketData.MarketType)
+
+            pItems.forEach(pItem => {
+                portfolio.content.splice(portfolio.content.indexOf(pItem), 1)
+                HandlePortfolioItem(pItem, marketData)
+            })
+        }
+
         //(Re)creates the total row with the current values in the portfolio
         function UpdateTotalRow() {
             $("#total-row").remove()
@@ -132,23 +152,27 @@
         }
 
         //Handles a portfolioitem by showing its graph and its profits/losses
-        function HandlePortfolioItem(pItem, marketData) {
+        function HandlePortfolioItem(pItem, marketData, firstTime) {
             //Calculates the current value and adds it to the portfolio item
             pItem.currentValue = marketData.data[marketData.data.length - 1].Value * pItem.Amount
             
-            //Then add it to the portfolio in order for it to be used elsewhere
-            portfolio.addItem(pItem)
-
-            //Append the portfolio item to the table
-            $('#change-table > tbody:last-child').append(`
-                <tr class=${pItem.currentValue > pItem.BuyPrice ? "table-positive" : "table-negative"}>
+            let trString = `
+                <tr id="table-${pItem.MarketType}-${pItem.MarketAbbr}" class=${pItem.currentValue > pItem.BuyPrice ? "table-positive" : "table-negative"}>
                     <td>${pItem.MarketAbbr}</td>
                     <td>${pItem.Amount}</td>
                     <td>${(pItem.currentValue).toFixed(2)}</td>
                     <td class="table-color-adjustable">${(pItem.currentValue - pItem.BuyPrice).toFixed(2)}</td>
                     <td class="table-color-adjustable">${((pItem.currentValue / pItem.BuyPrice - 1) * 100).toFixed(2)}</td>
-                </tr>
-            `)
+                </tr>`
+            
+            if (firstTime) {
+                //Append the portfolio item to the table
+                $('#change-table > tbody:last-child').append(trString)
+            } else {
+                $(`#table-${pItem.MarketType}-${pItem.MarketAbbr}`).replace(trString)
+            }
+
+            portfolio.addItem(pItem)   
 
             //Let the total row update to reflect the new totals
             UpdateTotalRow()
