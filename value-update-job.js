@@ -11,10 +11,12 @@ var con = mysql.createConnection({
 
 con.connect((err) => { if (err) throw err })
 
+let cb;
 
-function Schedule(cb) {
+function Schedule(callback) {
+    let cb = callback
     // Update all market values in the database every minute.
-    const job = schedule.scheduleJob("*/1 * * * *", UpdateMarketValues(cb))
+    const job = schedule.scheduleJob("*/1 * * * *", UpdateMarketValues)
 }
 
 function UpdateMarketValues(cb) {
