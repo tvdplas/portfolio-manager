@@ -15,7 +15,6 @@ var cb;
 
 function Schedule(callback) {
     cb = callback
-    console.log
     // Update all market values in the database every minute.
     const job = schedule.scheduleJob("*/1 * * * *", UpdateMarketValues)
 }
