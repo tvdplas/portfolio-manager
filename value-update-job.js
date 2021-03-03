@@ -11,7 +11,7 @@ var con = mysql.createConnection({
 
 con.connect((err) => { if (err) throw err })
 
-let cb;
+var cb;
 
 function Schedule(callback) {
     let cb = callback
