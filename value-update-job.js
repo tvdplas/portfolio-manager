@@ -15,11 +15,12 @@ var cb;
 
 function Schedule(callback) {
     cb = callback
+    console.log
     // Update all market values in the database every minute.
     const job = schedule.scheduleJob("*/1 * * * *", UpdateMarketValues)
 }
 
-function UpdateMarketValues(cb) {
+function UpdateMarketValues() {
     let date = new Date().toISOString().slice(0, 19).replace('T', ' ')
     console.log(`${date} - fetching market data`)
 
@@ -32,7 +33,7 @@ function UpdateMarketValues(cb) {
     })
 }
 
-function UpdateMarket(market, date, cb) {
+function UpdateMarket(market, date) {
     //First, get the new value for the market
     if (market.MarketType == "crypto") {
         request(`https://api.litebit.eu/market/${market.MarketAbbr}`, (reqErr, res, body) => {
