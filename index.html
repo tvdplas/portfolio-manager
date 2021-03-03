@@ -63,6 +63,7 @@
                 this.totalChangeP = (this.totalValue / this.totalPrice - 1) * 100
             }
         }
+        let currentGraph = "none"
 
         socket.on('market-update', (MD) => {
             //TODO: Needs to check the market type too
@@ -74,6 +75,9 @@
                 marketInfo[index].data.push({CurrencyAbbr: MD.CurrencyAbbr, Value: MD.Value, DataTime: MD.DataTime, })
                 marketInfo[index].data.shift()
                 UpdateTableRows(marketInfo[index])
+                if (currentGraph == `${MD.MarketType}-${MD.MarketAbbr}`) {
+                    GraphMarket(marketInfo[index], document.getElementById("cv"))
+                }
             }
         })
              //Holds all of the portfolio content for the user
@@ -186,6 +190,7 @@
 
         //Graphs a market based on the market data, a reference to the canvas on which is is to be drawn and the color
         function GraphMarket(marketData, cv) {
+            currentGraph = `${marketData.MarketType}-${marketData.MarketAbbr}`
             let ctx = cv.getContext('2d')
             ctx.clearRect(0, 0, cv.width, cv.height);
             ctx.strokeStyle = (marketData.data[0].Value < marketData.data[marketData.data.length - 1].Value) ? "#0f0" : "#f00"
