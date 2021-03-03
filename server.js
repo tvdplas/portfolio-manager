@@ -1,7 +1,7 @@
 let express = require("express")
-let app = express()
-let http = require('http').Server(app)
-let io = require('socket.io')(http)
+const app = express()
+const http = require('http').Server(app)
+const io = require('socket.io')(http)
 let path = require("path")
 
 let mysql = require("mysql")
