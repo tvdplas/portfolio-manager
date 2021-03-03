@@ -87,7 +87,7 @@
 
                     if (existingMInfo) {
                         //If it's already in out info, we dont need to request again
-                        HandlePortfolioItem(pItem, existingMInfo)
+                        HandlePortfolioItem(pItem, existingMInfo, true)
                     } else {
                         //No market info was found, so it needs to be requested
                         FetchMarket(pItem)
@@ -128,7 +128,7 @@
             const dpcount = new URLSearchParams(window.location.search).get('dpcount') ?? 1440
 
             $.getJSON(`markets/${pItem.MarketType}/${pItem.MarketAbbr}?dpcount=${dpcount}`, (marketData) => {
-                HandlePortfolioItem(pItem, marketData)
+                HandlePortfolioItem(pItem, marketData, true)
 
                 //Recheck to see if the marketinfo wasnt asynchronously added, if not, add it to the array
                 if (!marketInfo.some(e => e.MarketAbbr === pItem.MarketAbbr)) {
@@ -168,7 +168,7 @@
                 //Append the portfolio item to the table
                 $('#change-table > tbody:last-child').append(trString)
             } else {
-                $(`#table-${pItem.MarketType}-${pItem.MarketAbbr}`).replace(trString)
+                $(`#table-${pItem.MarketType}-${pItem.MarketAbbr}`).replaceWith(trString)
             }
 
             portfolio.addItem(pItem)   
