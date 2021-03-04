@@ -184,7 +184,10 @@ function GraphMarket(marketData, cv, graphOptions) {
     ctx.stroke()
 
     if (graphOptions.DisplayAverage) {
-        let avg = marketData.data.reduce((a, b) => a + b, 0) / marketData.data.length
+        let sum;
+        marketData.data.forEach(e => sum += e.Value)
+        let avg = sum / marketData.data.length
+
         let p1 = ScalePoint(
             { x: 0, y: avg },
             { width: cv.width, height: cv.height },
