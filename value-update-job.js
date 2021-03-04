@@ -73,9 +73,6 @@ function UpdateMarket(market, date) {
                     CurrencyAbbr: "EUR",
                     Value: rawMD.EUR[0].pxSous
                 }
-                
-                console.log(rawMD.EUR[0])
-                console.log(MD.Value)
     
                 con.query(`
                     INSERT INTO marketvalue
@@ -92,7 +89,24 @@ function UpdateMarket(market, date) {
         request(`https://finance.yahoo.com/quote/${market.MarketAbbr}?p=${market.MarketAbbr}`, (reqErr, res, body) => {
             if (reqErr) throw reqErr
             const $ = cheerio.load(body.toString())
-            console.log($(`.Fw\\(b\\) .Fz\\(36px\\) .Mb\\(-4px\\) .D\\(ib\\)`, body))
+            let val = $(`.Fw\\(b\\).Fz\\(36px\\).Mb\\(-4px\\).D\\(ib\\)`, body)['0'].children[0].data
+            
+        	let MD = {
+                DateTime: date,
+                MarketType: market.MarketType,
+                MarketAbbr: market.MarketAbbr,
+                CurrencyAbbr: "EUR",
+                Value: val
+            }
+
+            con.query(`
+                    INSERT INTO marketvalue
+                    VAlUES ('${MD.DateTime}', '${MD.MarketType}', '${MD.MarketAbbr}', '${MD.CurrencyAbbr}', '${MD.Value}')`,
+                    (err, res) => {
+                        if (err) throw err;
+
+                    cb(MD)
+                })
         })
     }
     else {
