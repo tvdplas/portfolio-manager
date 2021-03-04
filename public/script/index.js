@@ -124,7 +124,16 @@ function HandlePortfolioItem(pItem, marketData, firstTime) {
 
     if (firstTime) {
         //Append the portfolio item to the table
-        $('#change-table > tbody:last-child').append(trString)
+        //To do that, add it to the correct category
+        if (!$(`#change-table > #row-${pItem.MarketType}`).length) {
+            $('#change-table > tbody:last-child').append(`
+                <tr id="row-${pItem.MarketType}">
+                    <th colspan="5"><b>${pItem.MarketType}</b></th>
+                </tr>
+            `)
+        }
+        
+        $(`#change-table > #row-${pItem.MarketType}`).append(trString)
     } else {
         //If the row just needs an update, replace it
         $(`#table-${pItem.MarketType}-${pItem.MarketAbbr}`).replaceWith(trString)
