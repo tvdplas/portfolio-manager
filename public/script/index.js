@@ -133,7 +133,7 @@ function HandlePortfolioItem(pItem, marketData, firstTime) {
             `)
         }
 
-        $(`#row-${pItem.MarketType}:after`).append(trString)
+        $(`#row-${pItem.MarketType}`).after(trString)
     } else {
         //If the row just needs an update, replace it
         $(`#table-${pItem.MarketType}-${pItem.MarketAbbr}`).replaceWith(trString)
