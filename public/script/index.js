@@ -16,7 +16,9 @@ socket.on('market-update', (MD) => {
         marketInfo[index].data.shift()
         UpdateTableRows(marketInfo[index])
         if (currentGraph == `${MD.MarketType}-${MD.MarketAbbr}`) {
-            GraphMarket(marketInfo[index], document.getElementById("cv"))
+            GraphMarket(marketInfo[index], document.getElementById("cv"), {
+                DisplayAverage: true
+            })
         }
     }
 })
@@ -92,7 +94,9 @@ function FetchMarket(pItem) {
 
             //If no graph is currently being displayed, make this the one that's being displayed
             if (($("#graph-dropdown").children().length == 0 && displayedGraph == "none") || marketData.MarketAbbr == displayedGraph)
-                GraphMarket(marketData, cv, "#FF0000")
+                GraphMarket(marketData, cv, {
+                    DisplayAverage: true
+                })
 
             //Add the market identifier to the graph selection if it isn't already there
             if (!$("#graph-dropdown").children().toArray().some(e => e.value === pItem.MarketAbbr)) {
@@ -136,11 +140,15 @@ function HandlePortfolioItem(pItem, marketData, firstTime) {
 function ChangeCurrentGraph(marketAbbr) {
     let cv = document.getElementById("cv")
     let marketData = marketInfo.find(e => e.MarketAbbr === marketAbbr)
-    GraphMarket(marketData, cv, "#F00")
+    GraphMarket(marketData, cv, 
+        {
+            DisplayAverage: true
+        }    
+    )
 }
 
 //Graphs a market based on the market data, a reference to the canvas on which is is to be drawn and the color
-function GraphMarket(marketData, cv) {
+function GraphMarket(marketData, cv, graphOptions) {
     currentGraph = `${marketData.MarketType}-${marketData.MarketAbbr}`
     let ctx = cv.getContext('2d')
     ctx.clearRect(0, 0, cv.width, cv.height);
@@ -174,6 +182,22 @@ function GraphMarket(marketData, cv) {
         ctx.lineTo(p.x, p.y)
     }
     ctx.stroke()
+
+    if (graphOptions.DisplayAverage) {
+        let avg = marketData.data.reduce((a, b) => a + b, 0) / marketData.data.length
+        let p1 = ScalePoint(
+            { x: 0, y: avg },
+            { width: cv.width, height: cv.height },
+            { len: marketData.data.length, min: min, max: max })
+        let p2 = ScalePoint(
+            { x: marketData.data.length - 1, y: avg },
+            { width: cv.width, height: cv.height },
+            { len: marketData.data.length, min: min, max: max })
+
+        ctx.moveTo(p1.x, p1.y)
+        ctx.lineTo(p2.x, p2.y)
+        ctx.stroke()
+    }
 }
 
 //Scales a point for given canvas dimensions and data dimensions.
@@ -182,7 +206,7 @@ function ScalePoint(p, cDims, dDims) {
     let hPadding = 0.05 //Specifies the percentage of the canvas on the sides which is not used for the graph lines
 
     let ret = { x: 0, y: 0 }
-    ret.x = hPadding * cDims.width + p.x / (dDims.len-1) * (cDims.width * (1 - 2 * hPadding))
+    ret.x = hPadding * cDims.width + p.x / (dDims.len - 1) * (cDims.width * (1 - 2 * hPadding))
     if (dDims.min == dDims.max) {
         ret.y = cDims.height * 0.5
     } else {
