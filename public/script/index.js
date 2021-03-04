@@ -142,7 +142,7 @@ function ChangeCurrentGraph(marketAbbr) {
     let marketData = marketInfo.find(e => e.MarketAbbr === marketAbbr)
     GraphMarket(marketData, cv, 
         {
-            DisplayAverage: true
+            DisplayRollingAverage: true
         }    
     )
 }
@@ -157,16 +157,16 @@ function GraphMarket(marketData, cv, graphOptions) {
     let min = Math.min(...marketData.data.map(o => o.Value))
     let max = Math.max(...marketData.data.map(o => o.Value))
 
-    let p = ScalePoint(
+    let pStart = ScalePoint(
         { x: 0, y: marketData.data[0].Value },
         { width: cv.width, height: cv.height },
         { len: marketData.data.length, min: min, max: max })
 
     ctx.beginPath()
 
-    ctx.moveTo(p.x, p.y)
+    ctx.moveTo(pStart.x, pStart.y)
     for (let i = 1; i < marketData.data.length; i++) {
-        p = ScalePoint(
+        let p = ScalePoint(
             { x: i, y: marketData.data[i].Value },
             { width: cv.width, height: cv.height },
             { len: marketData.data.length, min: min, max: max })
@@ -199,6 +199,30 @@ function GraphMarket(marketData, cv, graphOptions) {
 
         ctx.moveTo(p1.x, p1.y)
         ctx.lineTo(p2.x, p2.y)
+        ctx.stroke()
+    }
+
+    if (graphOptions.DisplayRollingAverage) {
+        let windowSize = graphOptions.RollingWindowSize ?? 10
+        
+        ctx.moveTo(pStart.x, pStart.y)
+
+        for (let i = 0; i < marketData.data.length; i++) {
+            let sum = 0, count = 0;
+
+            for (let j = 0; j < windowSize && i - j >= 0; j++) {
+                count++
+                sum += marketData.data[i - j].Value;
+            }
+
+            let avg = sum / count
+
+            let p = ScalePoint(
+                { x: i, y: avg },
+                { width: cv.width, height: cv.height },
+                { len: marketData.data.length, min: min, max: max })
+            ctx.lineTo(p.x, p.y)
+        }
         ctx.stroke()
     }
 }
