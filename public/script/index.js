@@ -157,6 +157,12 @@ function GetGraphOptions() {
     return options;
 }
 
+function UpdateGraph() {
+    let arr = currentGraph.split('-')
+    let marketData = marketInfo.find((e) => e.MarketType == arr[0] && e.MarketAbbr == arr[1])
+    GraphMarket(marketData, document.getElementById('cv'))
+}
+
 //Graphs a market based on the market data, a reference to the canvas on which is is to be drawn and the color
 function GraphMarket(marketData, cv) {
     let graphOptions = GetGraphOptions()
