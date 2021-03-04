@@ -1,7 +1,7 @@
 const schedule = require("node-schedule")
 const request = require("request")
 let mysql = require("mysql")
-let $ = require('cheerio')
+let cheerio = require('cheerio')
 
 var con = mysql.createConnection({
     host: "192.168.2.35",
@@ -91,7 +91,7 @@ function UpdateMarket(market, date) {
     else if (market.MarketType == "stock") {
         request(`https://finance.yahoo.com/quote/${market.MarketType}?p=${market.MarketType}`, (reqErr, res, body) => {
             if (reqErr) throw reqErr
-
+            const $ = cheerio.load(body.toString())
             console.log($(`#quote-header-info`, body))
         })
     }
