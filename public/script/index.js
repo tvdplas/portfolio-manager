@@ -127,7 +127,7 @@ function HandlePortfolioItem(pItem, marketData, firstTime) {
         //To do that, add it to the correct category
         if ($(`#row-${pItem.MarketType}`).length == 0) {
             $('#change-table > tbody:last-child').append(`
-                <tr id="row-${pItem.MarketType}">
+                <tr id="row-${pItem.MarketType}" class="table-section-header">
                     <th colspan="5"><b>${pItem.MarketType}</b></th>
                 </tr>
             `)
