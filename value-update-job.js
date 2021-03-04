@@ -92,8 +92,6 @@ function UpdateMarket(market, date) {
         request(`https://finance.yahoo.com/quote/${market.MarketType}?p=${market.MarketType}`, (reqErr, res, body) => {
             if (reqErr) throw reqErr
 
-            console.log(body)
-
             console.log($(`#quote-header-info`, body))
         })
     }
