@@ -151,7 +151,7 @@ function GetGraphOptions() {
     let options = {}
     
     $('#graphoptions > input').each(() => {
-        options[this.attr('name')] = this.is(':checked')
+        options[$(this).attr('name')] = $(this).is(':checked')
     })
 
     console.log(GetGraphOptions())
