@@ -68,7 +68,7 @@ function UpdateTotalRow() {
 
     //Once all items have been handled, we can add a total row to the table
     $('#change-table > tbody:last-child').append(`
-                <tr id="total-row" class=${totalValue > totalPrice ? "table-positive" : "table-negative"}>
+                <tr id="total-row" class="${totalValue > totalPrice ? "table-positive" : "table-negative"}">
                     <td>Total</td>
                     <td>-</td>
                     <td>${(totalValue).toFixed(2)}</td>
@@ -114,7 +114,7 @@ function HandlePortfolioItem(pItem, marketData, firstTime) {
     pItem.currentValue = marketData.data[marketData.data.length - 1].Value * pItem.Amount
 
     let trString = `
-                <tr id="table-${pItem.MarketType}-${pItem.MarketAbbr}" class=${pItem.currentValue > pItem.BuyPrice ? "table-positive" : "table-negative"}>
+                <tr id="table-${pItem.MarketType}-${pItem.MarketAbbr}" class="${pItem.currentValue > pItem.BuyPrice ? "table-positive" : "table-negative"} ${marketData.data[marketData.data.length - 2].Value < marketData.data[marketData.data.length - 1].Value ? "table-d-positive" : ".table-d-negative"}">
                     <td>${pItem.MarketAbbr}</td>
                     <td>${pItem.Amount}</td>
                     <td>${(pItem.currentValue).toFixed(2)}</td>
