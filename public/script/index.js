@@ -150,11 +150,10 @@ function ChangeCurrentGraph(marketAbbr) {
 function GetGraphOptions() {
     let options = {}
     
-    const checkboxes = document.querySelectorAll('input:checked');
+    document.querySelectorAll('#graphoptions > input:checked').forEach(inp => {
+        options[inp.name] = true
+    })
 
-    console.log(checkboxes)
-
-    console.log(options)
     return options;
 }
 
