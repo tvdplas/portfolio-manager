@@ -14,16 +14,36 @@
 
         .table-positive .table-color-adjustable {
             color: rgb(120, 189, 17);
+            animation: flash-update-green 1s;
         }
 
         .table-negative .table-color-adjustable {
             color: red;
+            animation: flash-update-red 1s;
         }
 
         #cv{ 
             border-style: solid;
             border-color: black;
             border-radius: 10px;
+        }
+
+        @keyframes flash-update-green {
+            0% {
+                background: rgba(120, 189, 17, 1)
+            }
+            100% {
+                background: rgba(120, 189, 17, 0)
+            }
+        }
+
+        @keyframes flash-update-red {
+            0% {
+                background: rgba(255, 0, 0, 1)
+            }
+            100% {
+                background: rgba(120, 189, 17, 0)
+            }
         }
     </style>
 </head>
