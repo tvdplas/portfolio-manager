@@ -69,7 +69,7 @@ function UpdateTotalRow() {
     //Once all items have been handled, we can add a total row to the table
     $('#change-table > tbody:last-child').append(`
                 <tr id="total-row" class="${totalValue > totalPrice ? "table-positive" : "table-negative"}">
-                    <td>Total</td>
+                    <td><b>Total</b></td>
                     <td>-</td>
                     <td>${(totalValue).toFixed(2)}</td>
                     <td class="table-color-adjustable">${(totalChange).toFixed(2)}</td>
