@@ -92,7 +92,7 @@ function UpdateMarket(market, date) {
         request(`https://finance.yahoo.com/quote/${market.MarketAbbr}?p=${market.MarketAbbr}`, (reqErr, res, body) => {
             if (reqErr) throw reqErr
             const $ = cheerio.load(body.toString())
-            console.log($(`.Fw\\(b\\) .Fz\\(36px\\) .Mb\\(-4px\\) .D\\(ib\\)`, body)[0])
+            console.log($(`.Fw\\(b\\) .Fz\\(36px\\) .Mb\\(-4px\\) .D\\(ib\\)`, body))
         })
     }
     else {
