@@ -12,7 +12,7 @@ socket.on('market-update', (MD) => {
     //Check if the market is even in the users portfolio
     if (index != -1) {
         //Add new info
-        marketInfo[index].data.push({ CurrencyAbbr: MD.CurrencyAbbr, Value: MD.Value, DataTime: MD.DataTime, })
+        marketInfo[index].data.push({ CurrencyAbbr: MD.CurrencyAbbr, Value: parseFloat(MD.Value), DataTime: MD.DataTime, })
         marketInfo[index].data.shift()
         UpdateTableRows(marketInfo[index])
         if (currentGraph == `${MD.MarketType}-${MD.MarketAbbr}`) {
