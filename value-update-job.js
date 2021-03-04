@@ -54,18 +54,18 @@ function UpdateMarket(market, date) {
                 VAlUES ('${MD.DateTime}', '${MD.MarketType}', '${MD.MarketAbbr}', '${MD.CurrencyAbbr}', '${MD.Value}')`,
                 (err, res) => {
                     if (err) throw err;
-                
-                cb(MD)
-            })
+
+                    cb(MD)
+                })
         })
     }
     else if (market.MarketType == "fund") {
-        if(date.slice(14,16) == "00") {
+        if (date.slice(14, 16) == "00") {
             request(`https://www.fundsquare.net/Fundsquare/application/vni/${market.MarketAbbr}`, (reqErr, res, body) => {
                 if (reqErr) throw reqErr
-    
+
                 let rawMD = JSON.parse(body)
-    
+
                 let MD = {
                     DateTime: date,
                     MarketType: market.MarketType,
@@ -73,41 +73,43 @@ function UpdateMarket(market, date) {
                     CurrencyAbbr: "EUR",
                     Value: rawMD.EUR[0].pxSous
                 }
-    
+
                 con.query(`
                     INSERT INTO marketvalue
                     VAlUES ('${MD.DateTime}', '${MD.MarketType}', '${MD.MarketAbbr}', '${MD.CurrencyAbbr}', '${MD.Value}')`,
                     (err, res) => {
                         if (err) throw err;
 
-                    cb(MD)
-                })
+                        cb(MD)
+                    })
             })
         }
     }
     else if (market.MarketType == "stock") {
-        request(`https://finance.yahoo.com/quote/${market.MarketAbbr}?p=${market.MarketAbbr}`, (reqErr, res, body) => {
-            if (reqErr) throw reqErr
-            const $ = cheerio.load(body.toString())
-            let val = $(`.Fw\\(b\\).Fz\\(36px\\).Mb\\(-4px\\).D\\(ib\\)`, body)['0'].children[0].data
-            
-        	let MD = {
-                DateTime: date,
-                MarketType: market.MarketType,
-                MarketAbbr: market.MarketAbbr,
-                CurrencyAbbr: "EUR",
-                Value: val
-            }
+        if (date.slice(14, 16) == "00") {
+            request(`https://finance.yahoo.com/quote/${market.MarketAbbr}?p=${market.MarketAbbr}`, (reqErr, res, body) => {
+                if (reqErr) throw reqErr
+                const $ = cheerio.load(body.toString())
+                let val = $(`.Fw\\(b\\).Fz\\(36px\\).Mb\\(-4px\\).D\\(ib\\)`, body)['0'].children[0].data
 
-            con.query(`
+                let MD = {
+                    DateTime: date,
+                    MarketType: market.MarketType,
+                    MarketAbbr: market.MarketAbbr,
+                    CurrencyAbbr: "EUR",
+                    Value: val
+                }
+
+                con.query(`
                     INSERT INTO marketvalue
                     VAlUES ('${MD.DateTime}', '${MD.MarketType}', '${MD.MarketAbbr}', '${MD.CurrencyAbbr}', '${MD.Value}')`,
                     (err, res) => {
                         if (err) throw err;
 
-                    cb(MD)
-                })
-        })
+                        cb(MD)
+                    })
+            })
+        }
     }
     else {
         throw new Error("No valid market type found")
