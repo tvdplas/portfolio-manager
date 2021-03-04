@@ -51,7 +51,7 @@ function UpdateTableRows(marketData) {
 }
 
 //(Re)creates the total row with the current values in the portfolio
-function UpdateTotalRow(pItem) {
+function UpdateTotalRow() {
     $("#total-row").remove()
 
     let totalValue = 0, totalPrice = 0, totalChange, totalChangeP;
@@ -104,7 +104,7 @@ function FetchMarket(pItem) {
     })
 }
 
-//Handles a portfolioitem by showing its graph and its profits/losses
+//Handles a portfolioitem by updating the profits table
 function HandlePortfolioItem(pItem, marketData, firstTime) {
     //Calculates the current value and adds it to the portfolio item
     pItem.currentValue = marketData.data[marketData.data.length - 1].Value * pItem.Amount
@@ -122,6 +122,7 @@ function HandlePortfolioItem(pItem, marketData, firstTime) {
         //Append the portfolio item to the table
         $('#change-table > tbody:last-child').append(trString)
     } else {
+        //If the row just needs an update, replace it
         $(`#table-${pItem.MarketType}-${pItem.MarketAbbr}`).replaceWith(trString)
     }
 
@@ -181,7 +182,7 @@ function ScalePoint(p, cDims, dDims) {
     let hPadding = 0.05 //Specifies the percentage of the canvas on the sides which is not used for the graph lines
 
     let ret = { x: 0, y: 0 }
-    ret.x = hPadding * cDims.width + p.x / dDims.len * (cDims.width * (1 - 2 * hPadding))
+    ret.x = hPadding * cDims.width + p.x / (dDims.len-1) * (cDims.width * (1 - 2 * hPadding))
     if (dDims.min == dDims.max) {
         ret.y = cDims.height * 0.5
     } else {
