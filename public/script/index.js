@@ -184,7 +184,7 @@ function GraphMarket(marketData, cv, graphOptions) {
     ctx.stroke()
 
     if (graphOptions.DisplayAverage) {
-        let sum;
+        let sum = 0
         marketData.data.forEach(e => sum += e.Value)
         let avg = sum / marketData.data.length
 
