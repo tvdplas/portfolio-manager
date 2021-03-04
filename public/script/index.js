@@ -48,7 +48,7 @@ function UpdateTableRows(marketData) {
 
     pItems.forEach(pItem => {
         portfolio.content.splice(portfolio.content.indexOf(pItem), 1)
-        HandlePortfolioItem(pItem, marketData, originalValue)
+        HandlePortfolioItem(pItem, marketData)
     })
 }
 
