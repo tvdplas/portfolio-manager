@@ -153,7 +153,7 @@ function GetGraphOptions() {
     document.querySelectorAll('#graphoptions > input:checked').forEach(inp => {
         options[inp.name] = true
     })
-    document.querySelectorAll('#graphoptions > input[type-number]').forEach(inp => {
+    document.querySelectorAll('#graphoptions > input[type=number]').forEach(inp => {
         options[inp.name] = inp.value
     })
 
