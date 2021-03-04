@@ -150,11 +150,12 @@ function ChangeCurrentGraph(marketAbbr) {
 function GetGraphOptions() {
     let options = {}
     
-    $('#graphoptions > input').each(() => {
-        options[$(this).attr('name')] = $(this).is(':checked')
-    })
+    const checkboxes = document.querySelectorAll('input:checked');
+
+    console.log(checkboxes)
 
     console.log(options)
+    return options;
 }
 
 //Graphs a market based on the market data, a reference to the canvas on which is is to be drawn and the color
