@@ -13,6 +13,9 @@ let con = mysql.createConnection({
 });
 con.connect((err) => { if (err) throw err })
 
+app.use(express.static('public'))
+
+
 app.get("/", (req, res) => {
     res.sendFile(path.resolve("./index.html"))
 })
