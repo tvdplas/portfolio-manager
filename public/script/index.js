@@ -154,7 +154,7 @@ function GetGraphOptions() {
         options[$(this).attr('name')] = $(this).is(':checked')
     })
 
-    console.log(GetGraphOptions())
+    console.log(options)
 }
 
 //Graphs a market based on the market data, a reference to the canvas on which is is to be drawn and the color
