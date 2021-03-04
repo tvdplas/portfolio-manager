@@ -92,7 +92,7 @@ function UpdateMarket(market, date) {
         request(`https://finance.yahoo.com/quote/${market.MarketType}?p=${market.MarketType}`, (reqErr, res, body) => {
             if (reqErr) throw reqErr
 
-            console.log($(`Trsdu\\(0\\.3s\\) Fw\\(b\\) Fz\\(36px\\) Mb\\(-4px\\) D\\(ib\\)`, body))
+            console.log($(`.Trsdu\\(0\\.3s\\) .Fw\\(b\\) .Fz\\(36px\\) .Mb\\(-4px\\) .D\\(ib\\)`, body))
         })
     }
     else {
