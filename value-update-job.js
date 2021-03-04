@@ -1,6 +1,7 @@
 const schedule = require("node-schedule")
 const request = require("request")
 let mysql = require("mysql")
+let $ = require('cheerio')
 
 var con = mysql.createConnection({
     host: "192.168.2.35",
@@ -86,6 +87,13 @@ function UpdateMarket(market, date) {
                 })
             })
         }
+    }
+    else if (market.MarketType == "stock") {
+        request(`https://finance.yahoo.com/quote/${market.MarketType}?p=${market.MarketType}`, (reqErr, res, body) => {
+            if (reqErr) throw reqErr
+
+            console.log($(`.Fw(b) .Fz(36px) .Mb(-4px) .D(ib)`, data))
+        })
     }
     else {
         throw new Error("No valid market type found")
