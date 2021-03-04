@@ -34,6 +34,13 @@
     <label for="graph-dropdown">Displaying:</label>
     <select name="graph-dropdown" id="graph-dropdown" onchange="ChangeCurrentGraph(this.value)"></select>
 
+    <div id="graphoptions">
+        <label for="DisplayAverage">Display average</label>
+        <input type="checkbox" name="DisplayAverage" id="DisplayAverage">
+        <label for="DisplayRollingAverage">Display rolling average</label>
+        <input type="checkbox" name="DisplayRollingAverage" id="DisplayRollingAverage">
+    </div>
+
     <table id="change-table">
         <tbody>
             <tr>

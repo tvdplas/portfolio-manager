@@ -147,8 +147,20 @@ function ChangeCurrentGraph(marketAbbr) {
     )
 }
 
+function GetGraphOptions() {
+    let options = {}
+    
+    $('#graphoptions > input').each(() => {
+        options[this.attr('name')] = this.is(':checked')
+    })
+
+    console.log(GetGraphOptions())
+}
+
 //Graphs a market based on the market data, a reference to the canvas on which is is to be drawn and the color
-function GraphMarket(marketData, cv, graphOptions) {
+function GraphMarket(marketData, cv) {
+    let graphOptions = GetGraphOptions()
+
     currentGraph = `${marketData.MarketType}-${marketData.MarketAbbr}`
     let ctx = cv.getContext('2d')
     ctx.clearRect(0, 0, cv.width, cv.height);
