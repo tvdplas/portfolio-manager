@@ -110,11 +110,13 @@ function FetchMarket(pItem) {
 
 //Handles a portfolioitem by updating the profits table
 function HandlePortfolioItem(pItem, marketData, firstTime) {
+    let originalValue = pItem.currentValue ?? pItem.BuyPrice;
+
     //Calculates the current value and adds it to the portfolio item
     pItem.currentValue = marketData.data[marketData.data.length - 1].Value * pItem.Amount
 
     let trString = `
-                <tr id="table-${pItem.MarketType}-${pItem.MarketAbbr}" class=${pItem.currentValue > pItem.BuyPrice ? "table-positive" : "table-negative"}>
+                <tr id="table-${pItem.MarketType}-${pItem.MarketAbbr}" class=${pItem.currentValue > pItem.originalValue ? "table-positive" : "table-negative"}>
                     <td>${pItem.MarketAbbr}</td>
                     <td>${pItem.Amount}</td>
                     <td>${(pItem.currentValue).toFixed(2)}</td>
