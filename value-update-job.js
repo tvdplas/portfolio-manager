@@ -34,29 +34,23 @@ function UpdateMarketValues() {
 }
 
 function UpdateMarket(market, date) {
+    let MD = {
+        DateTime: date,
+        MarketType: market.MarketType,
+        MarketAbbr: market.MarketAbbr
+    }
+
     //First, get the new value for the market
     if (market.MarketType == "crypto") {
         request(`https://api.litebit.eu/market/${market.MarketAbbr}`, (reqErr, res, body) => {
             if (reqErr) throw reqErr
 
             let rawMD = JSON.parse(body)
+                
+            MD.CurrencyAbbr = "EUR";
+            MD.Value = rawMD.result.sell;
 
-            let MD = {
-                DateTime: date,
-                MarketType: market.MarketType,
-                MarketAbbr: market.MarketAbbr,
-                CurrencyAbbr: "EUR",
-                Value: rawMD.result.sell
-            }
-
-            con.query(`
-                INSERT INTO marketvalue
-                VAlUES ('${MD.DateTime}', '${MD.MarketType}', '${MD.MarketAbbr}', '${MD.CurrencyAbbr}', '${MD.Value}')`,
-                (err, res) => {
-                    if (err) throw err;
-
-                    cb(MD)
-                })
+            InsertMD(MD)
         })
     }
     else if (market.MarketType == "fund") {
@@ -66,22 +60,10 @@ function UpdateMarket(market, date) {
 
                 let rawMD = JSON.parse(body)
 
-                let MD = {
-                    DateTime: date,
-                    MarketType: market.MarketType,
-                    MarketAbbr: market.MarketAbbr,
-                    CurrencyAbbr: "EUR",
-                    Value: rawMD.EUR[0].pxSous
-                }
+                MD.CurrencyAbbr = "EUR";
+                MD.Value = rawMD.EUR[0].pxSous;
 
-                con.query(`
-                    INSERT INTO marketvalue
-                    VAlUES ('${MD.DateTime}', '${MD.MarketType}', '${MD.MarketAbbr}', '${MD.CurrencyAbbr}', '${MD.Value}')`,
-                    (err, res) => {
-                        if (err) throw err;
-
-                        cb(MD)
-                    })
+                InsertMD(MD)
             })
         }
     }
@@ -92,28 +74,27 @@ function UpdateMarket(market, date) {
                 const $ = cheerio.load(body.toString())
                 let val = $(`.Fw\\(b\\).Fz\\(36px\\).Mb\\(-4px\\).D\\(ib\\)`, body)['0'].children[0].data
 
-                let MD = {
-                    DateTime: date,
-                    MarketType: market.MarketType,
-                    MarketAbbr: market.MarketAbbr,
-                    CurrencyAbbr: "EUR",
-                    Value: val
-                }
+                MD.CurrencyAbbr = "EUR";
+                MD.Value = val;
 
-                con.query(`
-                    INSERT INTO marketvalue
-                    VAlUES ('${MD.DateTime}', '${MD.MarketType}', '${MD.MarketAbbr}', '${MD.CurrencyAbbr}', '${MD.Value}')`,
-                    (err, res) => {
-                        if (err) throw err;
-
-                        cb(MD)
-                    })
+                InsertMD(MD)
             })
         }
     }
     else {
         throw new Error("No valid market type found")
     }
+}
+
+function InsertMD(MD) {
+    con.query(`
+        INSERT INTO marketvalue
+        VAlUES ('${MD.DateTime}', '${MD.MarketType}', '${MD.MarketAbbr}', '${MD.CurrencyAbbr}', '${MD.Value}')`,
+        (err, res) => {
+            if (err) throw err;
+
+            cb(MD)
+    })
 }
 
 module.exports = Schedule;
