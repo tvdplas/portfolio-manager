@@ -25,7 +25,7 @@ socket.on('market-update', (MD) => {
 //Holds all of the portfolio content for the user
 
 $(document).ready(() => {
-    $.getJSON(`http://plopfyre.studio/users/1`, (userData) => {
+    $.getJSON(`users/1`, (userData) => {
         //Get the info for each portfolio item
         userData.data.forEach(pItem => {
             //Try to find an existing market info in memory
@@ -83,7 +83,7 @@ function FetchMarket(pItem) {
     //Gives the amount of datapoints that need to be retrieved
     const dpcount = new URLSearchParams(window.location.search).get('dpcount') ?? 1440
 
-    $.getJSON(`http://plopfyre.studio/markets/${pItem.MarketType}/${pItem.MarketAbbr}?dpcount=${dpcount}`, (marketData) => {
+    $.getJSON(`markets/${pItem.MarketType}/${pItem.MarketAbbr}?dpcount=${dpcount}`, (marketData) => {
         HandlePortfolioItem(pItem, marketData, true)
 
         //Recheck to see if the marketinfo wasnt asynchronously added, if not, add it to the array
